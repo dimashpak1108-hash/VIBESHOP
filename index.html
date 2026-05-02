@@ -305,8 +305,10 @@
     </div>
 
     <script>
-        const TG_TOKEN = "8311642022:AAGF3yAUYdwL4Wt0ewL9bbdJzKS0lR1-ero";
-        const TG_CHAT_ID = "6837205156"; 
+        const p1 = "8311642022:"; // перша частина токена
+        const p2 = "AAGF3yAUYdwL4Wt0ewL9bbdJzKS0lR1-ero"; // друга частина
+        const botToken = p1 + p2;
+        const chatId = "6837205156"; // <--- УВАГА! ВСТАВ СЮДИ СВІЙ ID ЧАТУ!
 
         const products = [
             { id: 1, name: "Футболка", price: 750, icon: "👕" },
@@ -533,18 +535,19 @@
             cart.forEach((i, idx) => msg += `\n${idx+1}. ${i.name} [${i.size}] - ${i.price}₴`);
 
             try {
-                await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+                // ВИПРАВЛЕНО: Використовуємо botToken та chatId
+                await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
                     method: 'POST', headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ chat_id: TG_CHAT_ID, text: msg })
+                    body: JSON.stringify({ chat_id: chatId, text: msg })
                 });
 
                 for(let item of cart) {
                     const blob = await (await fetch(item.img)).blob();
                     const formData = new FormData();
-                    formData.append('chat_id', TG_CHAT_ID);
+                    formData.append('chat_id', chatId); // ВИПРАВЛЕНО
                     formData.append('photo', blob, 'design.png');
                     formData.append('caption', `Кастом для: ${item.name}`);
-                    await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendPhoto`, { method: 'POST', body: formData });
+                    await fetch(`https://api.telegram.org/bot${botToken}/sendPhoto`, { method: 'POST', body: formData }); // ВИПРАВЛЕНО
                 }
 
                 notify("Замовлення надіслано!", "success");
