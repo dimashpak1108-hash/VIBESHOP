@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>VIBE | CUSTOM WEAR 2026</title>
+    <title>VIBE | КАСТОМНИЙ ОДЯГ 2026</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -43,11 +43,12 @@
             min-height: 100vh;
             overflow-x: hidden;
             background-image: 
-                radial-gradient(circle at 0% 0%, rgba(139, 92, 246, 0.2) 0%, transparent 50%),
-                radial-gradient(circle at 100% 100%, rgba(217, 70, 239, 0.15) 0%, transparent 50%);
+                radial-gradient(circle at top right, rgba(139, 92, 246, 0.15), transparent 400px),
+                radial-gradient(circle at bottom left, rgba(217, 70, 239, 0.1), transparent 400px);
             background-attachment: fixed;
         }
 
+        /* --- TOAST NOTIFICATIONS --- */
         #toast-container {
             position: fixed; bottom: 30px; right: 30px;
             z-index: 10000; display: flex; flex-direction: column; gap: 12px;
@@ -71,6 +72,7 @@
         .toast-item.success { border-left-color: var(--kolir-uspihu); }
         .toast-item.error { border-left-color: var(--kolir-pomylky); }
 
+        /* --- HEADER --- */
         header {
             padding: 20px 8%; display: flex; justify-content: space-between; align-items: center;
             background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(25px);
@@ -81,10 +83,8 @@
             font-size: 34px; font-weight: 900; cursor: pointer;
             background: linear-gradient(to right, #fff, var(--kolir-osnovnyi));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            transition: 0.3s;
-            letter-spacing: 2px;
+            transition: 0.3s; letter-spacing: 2px;
         }
-        .logo:hover { filter: drop-shadow(0 0 10px var(--kolir-osnovnyi)); }
 
         .cart-btn {
             padding: 14px 28px; border-radius: 18px; border: 2px solid var(--kolir-osnovnyi);
@@ -93,10 +93,16 @@
         }
         .cart-btn:hover { background: var(--kolir-osnovnyi); transform: translateY(-3px) scale(1.05); }
 
-        .page { display: none; padding: 60px 8%; animation: pageIn 0.8s var(--bez-curve) forwards; }
-        .page.active { display: block; }
-        @keyframes pageIn { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+        /* --- PAGES --- */
+        .page { display: none; padding: 60px 8%; }
+        .page.active { display: block; animation: pageIn 0.6s var(--bez-curve) forwards; }
+        
+        @keyframes pageIn { 
+            from { opacity: 0; transform: scale(0.98) translateY(20px); } 
+            to { opacity: 1; transform: scale(1) translateY(0); } 
+        }
 
+        /* --- CATALOG --- */
         .catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
 
         .card {
@@ -106,21 +112,45 @@
         }
         .card:hover { transform: translateY(-15px); border-color: var(--kolir-osnovnyi); box-shadow: 0 30px 60px rgba(0,0,0,0.4); }
         .card span { font-size: 85px; display: block; margin-bottom: 20px; transition: 0.5s; }
-        .card:hover span { transform: scale(1.15) rotate(5deg); }
 
-        .editor-container { display: flex; gap: 60px; flex-wrap: wrap; justify-content: center; }
+        /* --- EDITOR --- */
+        .editor-container { display: flex; gap: 60px; flex-wrap: wrap; justify-content: center; align-items: flex-start; }
+        
+        .canvas-wrapper { display: flex; flex-direction: column; gap: 20px; align-items: center; }
+
         .canvas-area {
             background: #fff; padding: 12px; border-radius: 35px;
             border: 12px solid #1e293b; box-shadow: 0 45px 90px rgba(0,0,0,0.6);
+            line-height: 0;
         }
-        canvas { cursor: crosshair; touch-action: none; border-radius: 20px; background: white; }
+        
+        canvas { cursor: crosshair; touch-action: none; border-radius: 20px; background-color: white; }
 
-        .color-palette { display: flex; gap: 15px; margin: 30px 0; }
-        .color-dot {
-            width: 50px; height: 50px; border-radius: 18px; cursor: pointer;
-            border: 4px solid transparent; transition: 0.4s var(--bez-curve);
+        .controls-group { margin-bottom: 20px; }
+        .label { font-size: 14px; color: var(--tekst-siryi); margin-bottom: 10px; display: block; font-weight: 600; }
+        
+        .selector { display: flex; gap: 10px; flex-wrap: wrap; }
+        .sel-item { 
+            background: #1e293b; padding: 10px 18px; border-radius: 12px; border: 2px solid transparent; 
+            cursor: pointer; font-weight: 700; transition: 0.2s;
         }
-        .color-dot.active { transform: scale(1.3); border-color: #fff; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+        .sel-item.active { border-color: var(--kolir-osnovnyi); background: rgba(139, 92, 246, 0.2); }
+
+        .color-palette { display: flex; gap: 12px; margin-top: 5px; }
+        .color-dot {
+            width: 38px; height: 38px; border-radius: 12px; cursor: pointer;
+            border: 3px solid transparent; transition: 0.3s var(--bez-curve);
+        }
+        .color-dot.active { transform: scale(1.2); border-color: #fff; }
+
+        .input-f {
+            width: 100%; padding: 18px; margin-bottom: 15px; border-radius: 16px;
+            border: 2px solid #334155; background: #1e293b; color: white; outline: none;
+        }
+        .input-f:focus { border-color: var(--kolir-osnovnyi); }
+
+        .brush-slider { width: 100%; height: 6px; border-radius: 5px; appearance: none; background: #1e293b; margin: 10px 0; }
+        .brush-slider::-webkit-slider-thumb { appearance: none; width: 18px; height: 18px; background: var(--kolir-osnovnyi); border-radius: 50%; cursor: pointer; }
 
         .btn-main {
             width: 100%; padding: 22px; border-radius: 20px; border: none;
@@ -128,32 +158,41 @@
             color: white; font-size: 20px; font-weight: 800; cursor: pointer; transition: 0.4s;
         }
         .btn-main:hover { transform: translateY(-4px); filter: brightness(1.1); }
-        .btn-main:disabled { filter: grayscale(1); cursor: not-allowed; }
+        
+        .btn-secondary {
+            background: #1e293b; color: white; border: 2px solid #334155; padding: 16px; border-radius: 18px; 
+            cursor: pointer; width: 100%; font-weight: 700; transition: 0.3s;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
 
+        /* --- MODALS --- */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95); display: none; justify-content: center; align-items: center; z-index: 2000;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(15px);
+            display: none; justify-content: center; align-items: center; z-index: 2000;
+            opacity: 0; transition: 0.4s ease;
         }
+        .modal-overlay.show { display: flex; opacity: 1; }
         
         .modal-content {
             background: #0f172a; width: 95%; max-width: 550px; padding: 40px;
             border-radius: 45px; border: 2px solid var(--kolir-osnovnyi);
             max-height: 90vh; display: flex; flex-direction: column;
+            transform: scale(0.9) translateY(30px); transition: 0.5s var(--bez-curve);
+            overflow-y: auto;
         }
-
-        #cart-list { overflow-y: auto; flex-grow: 1; margin: 25px 0; }
+        .modal-overlay.show .modal-content { transform: scale(1) translateY(0); }
 
         .cart-row {
-            background: rgba(255,255,255,0.04); padding: 20px; border-radius: 20px;
-            margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;
+            background: rgba(255,255,255,0.04); padding: 15px; border-radius: 20px;
+            margin-bottom: 12px; display: flex; gap: 15px; align-items: center;
+            transition: all 0.5s var(--bez-curve);
         }
+        .cart-row.removing { opacity: 0; transform: translateX(50px); margin-bottom: -80px; pointer-events: none; }
+        
+        .cart-img { width: 60px; height: 60px; border-radius: 10px; background: white; object-fit: contain; }
+        .btn-close { text-align: center; margin-top: 20px; cursor: pointer; opacity: 0.5; font-weight: 600; padding: 10px; }
 
-        .input-f {
-            width: 100%; padding: 18px; margin-bottom: 15px; border-radius: 16px;
-            border: 2px solid #334155; background: #1e293b; color: white;
-        }
-
-        .btn-close { text-align: center; margin-top: 20px; cursor: pointer; opacity: 0.5; }
     </style>
 </head>
 <body>
@@ -167,80 +206,132 @@
         </button>
     </header>
 
+    <!-- КАТАЛОГ -->
     <main id="home" class="page active">
-        <h1 style="text-align: center; font-size: 45px; margin-bottom: 10px;">CREATE YOUR VIBE</h1>
-        <p style="text-align: center; color: var(--tekst-siryi); margin-bottom: 50px;">Обери товар та створи власний дизайн</p>
+        <h1 style="text-align: center; font-size: 45px; margin-bottom: 10px;">ТВІЙ ДИЗАЙН</h1>
+        <p style="text-align: center; color: var(--tekst-siryi); margin-bottom: 50px;">Оберіть базу для власного кастому</p>
         <div class="catalog-grid" id="catalog"></div>
     </main>
 
+    <!-- РЕДАКТОР -->
     <section id="editor" class="page">
-        <div style="cursor:pointer; color:var(--kolir-osnovnyi); font-weight:800; margin-bottom:30px;" onclick="showPage('home')">← КАТАЛОГ</div>
+        <div style="cursor:pointer; color:var(--kolir-osnovnyi); font-weight:800; margin-bottom:30px;" onclick="showPage('home')">← НАЗАД ДО КАТАЛОГУ</div>
+        
         <div class="editor-container">
-            <div class="canvas-area"><canvas id="paint"></canvas></div>
-            <div style="flex:1; max-width:400px;">
-                <h2 id="p-title" style="font-size:38px;">Товар</h2>
-                <div id="p-price" style="font-size:28px; color:var(--kolir-osnovnyi); font-weight:800; margin:15px 0 25px 0;">0 ₴</div>
-                <div class="color-palette">
-                    <div class="color-dot active" style="background: #000;" data-c="#000"></div>
-                    <div class="color-dot" style="background: #ffffff;" data-c="#ffffff"></div>
-                    <div class="color-dot" style="background: #8b5cf6;" data-c="#8b5cf6"></div>
-                    <div class="color-dot" style="background: #ef4444;" data-c="#ef4444"></div>
+            <div class="canvas-wrapper">
+                <div class="canvas-area">
+                    <canvas id="paint"></canvas>
                 </div>
-                <button class="btn-main" onclick="addToCart()">У КОШИК</button>
-                <p onclick="clearCanvas()" style="text-align:center; margin-top:15px; cursor:pointer; opacity:0.5;">Очистити</p>
+                <button class="btn-secondary" onclick="undo()">↩ Скасувати останню дію</button>
+            </div>
+
+            <div style="flex:1; min-width:320px; max-width:400px;">
+                <h2 id="p-title" style="font-size:32px; margin-bottom: 5px;">Товар</h2>
+                <div id="p-price" style="font-size:24px; color:var(--kolir-osnovnyi); font-weight:800; margin-bottom: 25px;">0 ₴</div>
+
+                <div class="controls-group">
+                    <span class="label">ОБЕРІТЬ РОЗМІР</span>
+                    <div class="selector" id="size-selector">
+                        <div class="sel-item active">S</div>
+                        <div class="sel-item">M</div>
+                        <div class="sel-item">L</div>
+                        <div class="sel-item">XL</div>
+                    </div>
+                </div>
+
+                <div class="controls-group">
+                    <span class="label">КОЛІР ОСНОВИ (ТКАНИНИ)</span>
+                    <div class="color-palette" id="base-colors">
+                        <div class="color-dot active" style="background: #ffffff;" data-c="#ffffff"></div>
+                        <div class="color-dot" style="background: #000000;" data-c="#000000"></div>
+                        <div class="color-dot" style="background: #1e293b;" data-c="#1e293b"></div>
+                        <div class="color-dot" style="background: #ef4444;" data-c="#ef4444"></div>
+                        <div class="color-dot" style="background: #3b82f6;" data-c="#3b82f6"></div>
+                    </div>
+                </div>
+
+                <div class="controls-group">
+                    <span class="label">ТВІЙ ТЕКСТ НА ВИРОБІ</span>
+                    <input type="text" id="custom-text" class="input-f" placeholder="Напишіть щось..." oninput="drawAll()">
+                </div>
+
+                <div class="controls-group">
+                    <span class="label">КОЛІР ПЕНЗЛЯ ТА ТЕКСТУ</span>
+                    <div class="color-palette" id="brush-colors">
+                        <div class="color-dot active" style="background: #000000;" data-c="#000000"></div>
+                        <div class="color-dot" style="background: #8b5cf6;" data-c="#8b5cf6"></div>
+                        <div class="color-dot" style="background: #ffffff;" data-c="#ffffff"></div>
+                        <div class="color-dot" style="background: #ef4444;" data-c="#ef4444"></div>
+                        <div class="color-dot" style="background: #10b981;" data-c="#10b981"></div>
+                    </div>
+                </div>
+
+                <div class="controls-group">
+                    <span class="label">ТОВЩИНА ПЕНЗЛЯ</span>
+                    <input type="range" class="brush-slider" id="brush-size" min="2" max="25" value="6">
+                </div>
+
+                <button class="btn-main" onclick="addToCart()">ДОДАТИ В КОШИК</button>
+                <p onclick="clearCanvas()" style="text-align:center; margin-top:15px; cursor:pointer; opacity:0.5; font-size: 14px;">Очистити все</p>
             </div>
         </div>
     </section>
 
+    <!-- КОШИК -->
     <div class="modal-overlay" id="cart-modal">
         <div class="modal-content">
-            <h2 style="text-align:center;">Кошик</h2>
+            <h2 style="text-align:center;">Твій кошик</h2>
             <div id="cart-list"></div>
             <div id="cart-footer" style="display:none;">
                 <div style="display:flex; justify-content:space-between; margin-bottom:20px; font-size:22px; font-weight:800;">
                     <span>РАЗОМ:</span><span id="cart-total">0 ₴</span>
                 </div>
-                <button class="btn-main" onclick="openOrder()">ОФОРМИТИ</button>
+                <button class="btn-main" onclick="openOrder()">ПЕРЕЙТИ ДО ОФОРМЛЕННЯ</button>
             </div>
             <div class="btn-close" onclick="closeModals()">Закрити</div>
         </div>
     </div>
 
+    <!-- ОФОРМЛЕННЯ -->
     <div class="modal-overlay" id="order-modal">
         <div class="modal-content">
-            <h2 style="text-align:center; margin-bottom:25px;">Доставка</h2>
-            <input type="text" id="u-name" class="input-f" placeholder="Твоє ім'я">
-            <input type="tel" id="u-tel" class="input-f" placeholder="Телефон">
-            <input type="text" id="u-addr" class="input-f" placeholder="Адреса (місто, пошта)">
-            <button class="btn-main" id="send-btn" onclick="submitToTelegram()">ЗАМОВИТИ В TELEGRAM</button>
-            <div class="btn-close" onclick="openCart()">Назад</div>
+            <h2 style="text-align:center; margin-bottom:25px;">Контактні дані</h2>
+            <input type="text" id="u-name" class="input-f" placeholder="Ваше ім'я">
+            <input type="tel" id="u-tel" class="input-f" placeholder="Номер телефону">
+            <input type="text" id="u-addr" class="input-f" placeholder="Місто та номер Нової Пошти">
+            <button class="btn-main" id="send-btn" onclick="submitOrder()">ПІДТВЕРДИТИ ЗАМОВЛЕННЯ</button>
+            <div class="btn-close" onclick="openCart()">Назад до кошика</div>
         </div>
     </div>
 
     <script>
-        // БЕЗПЕЧНЕ ПРЕДСТАВЛЕННЯ ТОКЕНУ ДЛЯ GITHUB
-        const p1 = "8311642022:";
-        const p2 = "AAGF3yAUYdwL4Wt0ewL9bbdJzKS0lR1-ero";
-        const TG_TOKEN = p1 + p2;
+        const TG_TOKEN = "8311642022:AAGF3yAUYdwL4Wt0ewL9bbdJzKS0lR1-ero";
         const TG_CHAT_ID = "6837205156"; 
 
         const products = [
-            { id: 1, name: "VIBE T-Shirt", price: 750, icon: "👕" },
-            { id: 2, name: "VIBE Hoodie", price: 1650, icon: "🧥" },
-            { id: 3, name: "VIBE Cap", price: 500, icon: "🧢" },
-            { id: 4, name: "VIBE Totebag", price: 350, icon: "👜" }
+            { id: 1, name: "Футболка", price: 750, icon: "👕" },
+            { id: 2, name: "Худі", price: 1650, icon: "🧥" },
+            { id: 3, name: "Бомбер", price: 2200, icon: "🧥" },
+            { id: 4, name: "Кепка", price: 500, icon: "🧢" },
+            { id: 5, name: "Шапка", price: 450, icon: "🧶" },
+            { id: 6, name: "Оверсайз футболка", price: 950, icon: "👕" },
+            { id: 7, name: "Штани Карго", price: 1800, icon: "👖" },
+            { id: 8, name: "Шопер", price: 350, icon: "👜" }
         ];
 
         let cart = [];
-        let currentProduct = null;
+        let currentProd = null;
         let isDrawing = false;
-        let brushColor = "#000";
+        let history = [];
+        let brushColor = "#000000";
+        let baseColor = "#ffffff";
 
         const canvas = document.getElementById('paint');
         const ctx = canvas.getContext('2d');
 
         function renderCatalog() {
             const grid = document.getElementById('catalog');
+            grid.innerHTML = "";
             products.forEach(p => {
                 const card = document.createElement('div');
                 card.className = 'card';
@@ -251,20 +342,83 @@
         }
 
         function openEditor(p) {
-            currentProduct = p;
+            currentProd = p;
             document.getElementById('p-title').innerText = p.name;
             document.getElementById('p-price').innerText = p.price + " ₴";
+            document.getElementById('custom-text').value = "";
+            history = [];
+            baseColor = "#ffffff";
+            brushColor = "#000000";
             showPage('editor');
-            setTimeout(setupCanvas, 100);
+            setTimeout(initCanvas, 100);
         }
 
-        function setupCanvas() {
+        function initCanvas() {
             const size = Math.min(window.innerWidth - 60, 400);
             canvas.width = size; canvas.height = size;
-            ctx.lineWidth = 5; ctx.lineCap = 'round'; ctx.strokeStyle = brushColor;
+            drawAll();
         }
 
-        function clearCanvas() { ctx.clearRect(0,0,canvas.width,canvas.height); }
+        function drawAll() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = baseColor;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            history.forEach(path => {
+                ctx.beginPath();
+                ctx.strokeStyle = path.color;
+                ctx.lineWidth = path.width;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                path.points.forEach((pt, i) => {
+                    if(i === 0) ctx.moveTo(pt.x, pt.y);
+                    else ctx.lineTo(pt.x, pt.y);
+                });
+                ctx.stroke();
+            });
+
+            const txt = document.getElementById('custom-text').value;
+            if(txt) {
+                ctx.fillStyle = brushColor;
+                ctx.font = "bold 32px Plus Jakarta Sans";
+                ctx.textAlign = "center";
+                ctx.fillText(txt, canvas.width/2, canvas.height - 40);
+            }
+        }
+
+        // Логіка малювання
+        let currentPath = [];
+        canvas.onmousedown = canvas.ontouchstart = (e) => {
+            isDrawing = true;
+            currentPath = [];
+            const pos = getPos(e);
+            currentPath.push(pos);
+            if(e.type === 'touchstart') e.preventDefault();
+        };
+
+        canvas.onmousemove = canvas.ontouchmove = (e) => {
+            if(!isDrawing) return;
+            const pos = getPos(e);
+            currentPath.push(pos);
+            
+            ctx.beginPath();
+            ctx.strokeStyle = brushColor;
+            ctx.lineWidth = document.getElementById('brush-size').value;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            const last = currentPath[currentPath.length - 2];
+            ctx.moveTo(last.x, last.y);
+            ctx.lineTo(pos.x, pos.y);
+            ctx.stroke();
+            if(e.type === 'touchmove') e.preventDefault();
+        };
+
+        window.onmouseup = window.ontouchend = () => {
+            if(isDrawing && currentPath.length > 0) {
+                history.push({ color: brushColor, width: document.getElementById('brush-size').value, points: [...currentPath] });
+            }
+            isDrawing = false;
+        };
 
         function getPos(e) {
             const rect = canvas.getBoundingClientRect();
@@ -273,97 +427,146 @@
             return { x: cx - rect.left, y: cy - rect.top };
         }
 
-        canvas.onmousedown = canvas.ontouchstart = (e) => {
-            isDrawing = true;
-            const p = getPos(e);
-            ctx.beginPath(); ctx.moveTo(p.x, p.y);
-            if(e.type === 'touchstart') e.preventDefault();
-        };
+        function undo() { history.pop(); drawAll(); }
+        function clearCanvas() { history = []; document.getElementById('custom-text').value = ""; drawAll(); }
 
-        canvas.onmousemove = canvas.ontouchmove = (e) => {
-            if(!isDrawing) return;
-            const p = getPos(e);
-            ctx.lineTo(p.x, p.y); ctx.stroke();
-        };
-
-        window.onmouseup = window.ontouchend = () => { isDrawing = false; };
-
-        document.querySelectorAll('.color-dot').forEach(dot => {
-            dot.onclick = () => {
-                document.querySelector('.color-dot.active').classList.remove('active');
-                dot.classList.add('active');
-                brushColor = dot.dataset.c;
-                ctx.strokeStyle = brushColor;
+        // Вибір параметрів
+        document.querySelectorAll('#size-selector .sel-item').forEach(el => {
+            el.onclick = () => {
+                document.querySelector('#size-selector .active').classList.remove('active');
+                el.classList.add('active');
             };
         });
 
+        document.querySelectorAll('#base-colors .color-dot').forEach(el => {
+            el.onclick = () => {
+                document.querySelector('#base-colors .active').classList.remove('active');
+                el.classList.add('active');
+                baseColor = el.dataset.c;
+                drawAll();
+            };
+        });
+
+        document.querySelectorAll('#brush-colors .color-dot').forEach(el => {
+            el.onclick = () => {
+                document.querySelector('#brush-colors .active').classList.remove('active');
+                el.classList.add('active');
+                brushColor = el.dataset.c;
+                drawAll();
+            };
+        });
+
+        // Кошик та замовлення
         function addToCart() {
-            cart.push({ id: Date.now(), name: currentProduct.name, price: currentProduct.price });
-            updateCartUI();
-            notify("Додано у кошик!");
+            const size = document.querySelector('#size-selector .active').innerText;
+            const img = canvas.toDataURL("image/png");
+            cart.push({ id: Date.now(), name: currentProd.name, price: currentProd.price, size, img });
+            updateCartCount();
+            notify("Додано в кошик", "success");
             showPage('home');
         }
 
-        function updateCartUI() {
-            document.getElementById('count').innerText = cart.length;
+        function updateCartCount() { document.getElementById('count').innerText = cart.length; }
+
+        function openCart() {
+            closeModals();
+            const m = document.getElementById('cart-modal');
             const list = document.getElementById('cart-list');
             list.innerHTML = "";
             let total = 0;
-            cart.forEach(item => {
-                total += item.price;
-                const row = document.createElement('div');
-                row.className = 'cart-row';
-                row.innerHTML = `<div>${item.name}</div><b>${item.price} ₴</b>`;
-                list.appendChild(row);
-            });
-            document.getElementById('cart-total').innerText = total + " ₴";
-            document.getElementById('cart-footer').style.display = cart.length ? 'block' : 'none';
+
+            if(!cart.length) {
+                list.innerHTML = `<div style="text-align:center; padding: 40px 0;"><span style="font-size:60px;">🛒</span><p>Кошик порожній</p></div>`;
+                document.getElementById('cart-footer').style.display = 'none';
+            } else {
+                cart.forEach(item => {
+                    total += item.price;
+                    const row = document.createElement('div');
+                    row.className = 'cart-row';
+                    row.id = `cart-item-${item.id}`;
+                    row.innerHTML = `
+                        <img src="${item.img}" class="cart-img">
+                        <div style="flex:1">
+                            <div style="font-weight:700;">${item.name} (${item.size})</div>
+                            <div style="color:var(--kolir-osnovnyi); font-weight:800;">${item.price} ₴</div>
+                        </div>
+                        <button style="background:none; border:none; color:red; cursor:pointer; font-size:20px;" onclick="animateRemove(${item.id})">✕</button>
+                    `;
+                    list.appendChild(row);
+                });
+                document.getElementById('cart-total').innerText = total + " ₴";
+                document.getElementById('cart-footer').style.display = 'block';
+            }
+            m.style.display = 'flex'; setTimeout(() => m.classList.add('show'), 10);
         }
 
-        async function submitToTelegram() {
-            const n = document.getElementById('u-name').value;
-            const t = document.getElementById('u-tel').value;
-            const a = document.getElementById('u-addr').value;
-            if(!n || !t || !a) return notify("Заповни поля!");
+        function animateRemove(id) {
+            const el = document.getElementById(`cart-item-${id}`);
+            if(el) {
+                el.classList.add('removing');
+                setTimeout(() => {
+                    cart = cart.filter(i => i.id !== id);
+                    updateCartCount();
+                    openCart();
+                }, 500);
+            }
+        }
+
+        async function submitOrder() {
+            const name = document.getElementById('u-name').value;
+            const tel = document.getElementById('u-tel').value;
+            const addr = document.getElementById('u-addr').value;
+
+            if(!name || !tel || !addr) return notify("Заповніть всі поля!", "error");
 
             const btn = document.getElementById('send-btn');
-            btn.disabled = true; btn.innerText = "НАДСИЛАННЯ...";
+            btn.disabled = true; btn.innerText = "ОБРОБКА...";
 
-            let msg = `🔥 ЗАМОВЛЕННЯ VIBE\n\n👤 Ім'я: ${n}\n📞 Тел: ${t}\n📍 Адреса: ${a}\n\n📦 Товари:\n`;
-            cart.forEach((i, idx) => msg += `${idx+1}. ${i.name} - ${i.price} ₴\n`);
-            msg += `\n💰 РАЗОМ: ${document.getElementById('cart-total').innerText}`;
+            // 1. АНАЛІТИКА
+            const newOrder = { id: Date.now(), total: cart.reduce((s, i) => s + i.price, 0), items: cart.map(i => ({ name: i.name })) };
+            const allOrders = JSON.parse(localStorage.getItem('vibe_orders') || '[]');
+            allOrders.push(newOrder);
+            localStorage.setItem('vibe_orders', JSON.stringify(allOrders));
+
+            // 2. TELEGRAM
+            let msg = `🛍 НОВЕ ЗАМОВЛЕННЯ\n\nІм'я: ${name}\nТел: ${tel}\nАдреса: ${addr}\n\nТовари:`;
+            cart.forEach((i, idx) => msg += `\n${idx+1}. ${i.name} [${i.size}] - ${i.price}₴`);
 
             try {
-                const res = await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+                    method: 'POST', headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({ chat_id: TG_CHAT_ID, text: msg })
                 });
-                if(res.ok) {
-                    notify("Успішно надіслано!", "success");
-                    cart = []; updateCartUI(); closeModals(); showPage('home');
+
+                for(let item of cart) {
+                    const blob = await (await fetch(item.img)).blob();
+                    const formData = new FormData();
+                    formData.append('chat_id', TG_CHAT_ID);
+                    formData.append('photo', blob, 'design.png');
+                    formData.append('caption', `Кастом для: ${item.name}`);
+                    await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendPhoto`, { method: 'POST', body: formData });
                 }
-            } catch(e) { notify("Помилка!"); }
-            btn.disabled = false; btn.innerText = "ЗАМОВИТИ В TELEGRAM";
+
+                notify("Замовлення надіслано!", "success");
+                cart = []; updateCartCount(); closeModals(); showPage('home');
+            } catch(e) {
+                notify("Помилка з'єднання", "error");
+            }
+            btn.disabled = false; btn.innerText = "ПІДТВЕРДИТИ ЗАМОВЛЕННЯ";
         }
 
+        // Системні функції
+        function openOrder() { closeModals(); const m = document.getElementById('order-modal'); m.style.display = 'flex'; setTimeout(() => m.classList.add('show'), 10); }
         function notify(m, type="info") {
             const c = document.getElementById('toast-container');
             const t = document.createElement('div');
             t.className = `toast-item show ${type}`;
             t.innerText = m;
             c.appendChild(t);
-            setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 600); }, 2500);
+            setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 600); }, 3000);
         }
-
-        function showPage(id) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-        }
-
-        function openCart() { closeModals(); document.getElementById('cart-modal').style.display = 'flex'; }
-        function openOrder() { closeModals(); document.getElementById('order-modal').style.display = 'flex'; }
-        function closeModals() { document.querySelectorAll('.modal-overlay').forEach(m => m.style.display = 'none'); }
+        function showPage(id) { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById(id).classList.add('active'); window.scrollTo(0,0); }
+        function closeModals() { document.querySelectorAll('.modal-overlay').forEach(m => { m.classList.remove('show'); setTimeout(() => { if(!m.classList.contains('show')) m.style.display = 'none'; }, 400); }); }
 
         renderCatalog();
     </script>
