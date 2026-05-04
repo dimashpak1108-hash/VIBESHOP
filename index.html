@@ -1136,7 +1136,7 @@
             </p>
             <div class="order-id-chip" id="order-id-chip">ORD-000000</div>
             <p style="color:var(--dim);font-size:13px;">Зберіть цей номер для відстеження</p>
-            <button class="modal-btn" style="margin-top:28px;" onclick="closeModal('success-modal'); navigateTo('catalog-view')">ПРОДОВЖИТИ ПОКУПКИ</button>
+            <button class="modal-btn" style="margin-top:28px;" onclick="closeModal('success-modal');navigateTo('catalog-view')">ПРОДОВЖИТИ ПОКУПКИ</button>
         </div>
     </div>
 
@@ -1272,12 +1272,26 @@
     // ================================================================
     //  NAVIGATION
     // ================================================================
+    let _navHideTimer = null;
+
     function navigateTo(viewId) {
+        // Cancel any pending hide from a previous call — prevents race conditions
+        if (_navHideTimer) { clearTimeout(_navHideTimer); _navHideTimer = null; }
+
         const prev = document.querySelector('.view-section.active');
         if (prev) {
             prev.classList.remove('active');
-            setTimeout(() => { prev.style.display = 'none'; }, 500);
+            // Only schedule hide if navigating to a DIFFERENT section.
+            // If prev === next (same view), the timer would fire after display:block
+            // and blank the page — that's the exact bug we're fixing.
+            if (prev.id !== viewId) {
+                _navHideTimer = setTimeout(() => {
+                    prev.style.display = 'none';
+                    _navHideTimer = null;
+                }, 500);
+            }
         }
+
         const next = document.getElementById(viewId);
         next.style.display = 'block';
         requestAnimationFrame(() => {
@@ -1288,9 +1302,7 @@
             });
         });
 
-        // Update nav links
         document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-
         if (viewId === 'wishlist-view') renderWishlist();
     }
 
