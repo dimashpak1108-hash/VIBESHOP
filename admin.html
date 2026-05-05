@@ -225,19 +225,21 @@
         .chart-sub { font-size: 12px; color: var(--dim); margin-top: 2px; }
 
         /* BAR CHART */
-        .bar-chart { display: flex; align-items: flex-end; gap: 10px; height: 180px; }
-        .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+        .bar-chart { display: flex; align-items: flex-end; gap: 8px; height: 180px; padding-top: 30px; }
+        .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; height: 100%; justify-content: flex-end; }
         .bar-fill {
             width: 100%; border-radius: 8px 8px 0 0; min-height: 4px;
             background: linear-gradient(0deg, var(--primary), var(--secondary));
-            transition: height 0.8s var(--ease); position: relative;
+            transition: height 1s var(--ease); position: relative; cursor: pointer;
         }
-        .bar-fill:hover { filter: brightness(1.2); }
+        .bar-fill:hover { filter: brightness(1.25); }
         .bar-fill::after {
             content: attr(data-value);
-            position: absolute; top: -24px; left: 50%; transform: translateX(-50%);
+            position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%);
             font-size: 10px; font-weight: 700; color: var(--muted);
-            white-space: nowrap; opacity: 0; transition: opacity 0.2s;
+            white-space: nowrap; background: var(--bg-card); padding: 3px 8px;
+            border-radius: 6px; border: 1px solid var(--border);
+            opacity: 0; transition: opacity 0.2s; pointer-events: none;
         }
         .bar-fill:hover::after { opacity: 1; }
         .bar-label { font-size: 11px; color: var(--dim); font-weight: 600; }
@@ -989,17 +991,12 @@
 
     // Check session on load
     window.addEventListener('DOMContentLoaded', () => {
-        if (sessionStorage.getItem(SESSION_KEY)) {
-            document.getElementById('login-screen').classList.add('hidden');
-            document.getElementById('app').classList.add('visible');
-            loadAll();
-            startClock();
-            startPolling();
-        }
-
-        document.getElementById('pass-input').addEventListener('keydown', e => {
-            if (e.key === 'Enter') doLogin();
-        });
+        // Auto-login — no password required
+        document.getElementById('login-screen').classList.add('hidden');
+        document.getElementById('app').classList.add('visible');
+        loadAll();
+        startClock();
+        startPolling();
     });
 
     // ================================================================
@@ -1232,15 +1229,16 @@
             chart.innerHTML = '<div style="color:var(--dim);font-size:13px;padding:30px 0;">Даних ще немає</div>';
             return;
         }
+        const CHART_H = 150; // px — usable bar area (chart is 180px - 30px top padding)
         const maxVal = Math.max(...last10.map(o => o.total), 1);
         last10.forEach(o => {
-            const pct = (o.total / maxVal) * 100;
+            const px = Math.max(Math.round((o.total / maxVal) * CHART_H), 6);
             const date = new Date(o.date);
             const label = `${date.getDate()}.${String(date.getMonth()+1).padStart(2,'0')}`;
             const col = document.createElement('div');
             col.className = 'bar-col';
             col.innerHTML = `
-                <div class="bar-fill" style="height:${Math.max(pct, 4)}%" data-value="${o.total.toLocaleString('uk-UA')} ₴"></div>
+                <div class="bar-fill" style="height:${px}px" data-value="${o.total.toLocaleString('uk-UA')} ₴"></div>
                 <span class="bar-label">${label}</span>
             `;
             chart.appendChild(col);
